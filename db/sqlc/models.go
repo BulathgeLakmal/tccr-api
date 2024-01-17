@@ -66,7 +66,7 @@ type User struct {
 
 type UserDetail struct {
 	UserDetailsID int64         `json:"user_details_id"`
-	UserID        sql.NullInt64 `json:"user_ID"`
+	UserID        sql.NullInt64 `json:"user_id"`
 	Phone         int32         `json:"phone"`
 	AddressLine1  string        `json:"address_line1"`
 	AddressLine2  string        `json:"address_line2"`

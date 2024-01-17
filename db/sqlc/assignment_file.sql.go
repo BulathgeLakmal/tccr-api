@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createAssignmentFile = `-- name: CreateAssignmentFile :one
@@ -21,7 +20,7 @@ RETURNING assignment_file_id, assignment_id, assignment_link
 `
 
 type CreateAssignmentFileParams struct {
-	AssignmentID   sql.NullInt64 `json:"assignment_id"`
+	AssignmentID   int64 `json:"assignment_id"`
 	AssignmentLink string        `json:"assignment_link"`
 }
 

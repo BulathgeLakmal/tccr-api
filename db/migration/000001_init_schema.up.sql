@@ -9,7 +9,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "userDetails" (
   "user_details_id" bigserial PRIMARY KEY,
-  "user_ID" bigint,
+  "user_id" bigint,
   "phone" integer NOT NULL,
   "address_line1" varchar NOT NULL,
   "address_line2" varchar NOT NULL

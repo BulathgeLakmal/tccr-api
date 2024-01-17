@@ -18,13 +18,21 @@ INSERT INTO "userRole" (
 RETURNING role_id, role
 `
 
-func (q *Queries) CreateUserRole(ctx context.Context, role string) (UserRole, error) {
-	row := q.db.QueryRowContext(ctx, createUserRole, role)
-	var i UserRole
-	err := row.Scan(&i.RoleID, &i.Role)
-	return i, err
+type CreateUserRoleParams struct {
+	Role string        `json:"role"`
 }
 
+func (q *Queries) CreateUserRole(ctx context.Context, arg CreateUserRoleParams) (UserRole, error) {
+	row := q.db.QueryRowContext(ctx, createUserRole,
+		arg.Role,
+	)
+	var i UserRole
+	err := row.Scan(
+		&i.RoleID,
+		&i.Role,
+	)
+	return i, err
+}
 const deleteUserRole = `-- name: DeleteUserRole :exec
 DELETE FROM "userRole"
 WHERE role_id = $1

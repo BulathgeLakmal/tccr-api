@@ -1,10 +1,11 @@
 -- name: CreateUserDetails :one
 INSERT INTO "userDetails"(
+    user_id,
     phone,
     address_line1,
     address_line2
 ) VALUES (
-    $1, $2, $3
+    $1, $2, $3, $4
 )
 RETURNING *;
 

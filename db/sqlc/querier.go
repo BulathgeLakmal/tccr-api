@@ -18,7 +18,7 @@ type Querier interface {
 	CreateSubscribe(ctx context.Context, arg CreateSubscribeParams) (Subscribe, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserDetails(ctx context.Context, arg CreateUserDetailsParams) (UserDetail, error)
-	CreateUserRole(ctx context.Context, role string) (UserRole, error)
+	CreateUserRole(ctx context.Context, arg CreateUserRoleParams) (UserRole, error)
 	DeleteCategory(ctx context.Context, categoryID int64) error
 	DeleteCourse(ctx context.Context, courseID int64) error
 	DeleteCourseModule(ctx context.Context, moduleID int64) error

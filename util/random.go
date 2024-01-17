@@ -35,3 +35,9 @@ func RandomOwner() string {
 	return RandomString(6)
 }
 
+// RandomCurrency generates a random currency code
+func RandomStatus() string {
+	status := []string{"COMPLETED", "PROCESSING"}
+	n := len(status)
+	return status[rand.Intn(n)]
+}

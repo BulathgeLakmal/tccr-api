@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createAssignment = `-- name: CreateAssignment :one
@@ -22,9 +21,9 @@ RETURNING assignment_id, user_id, course_module_id, lecture_id
 `
 
 type CreateAssignmentParams struct {
-	UserID         sql.NullInt64 `json:"user_id"`
-	CourseModuleID sql.NullInt64 `json:"course_module_id"`
-	LectureID      sql.NullInt64 `json:"lecture_id"`
+	UserID         int64 `json:"user_id"`
+	CourseModuleID int64 `json:"course_module_id"`
+	LectureID      int64 `json:"lecture_id"`
 }
 
 func (q *Queries) CreateAssignment(ctx context.Context, arg CreateAssignmentParams) (Assignment, error) {

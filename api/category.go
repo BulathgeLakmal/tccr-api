@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -40,3 +41,54 @@ func (server *Server) createCategory(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, category)
 }
+
+
+type getCategoryRequest struct {
+	CategoryID int64 `uri:"category_id" binding:"required,min=1"`
+}
+
+func (server *Server) getCategory(ctx *gin.Context) {
+	var req getCategoryRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	category, err := server.store.GetCategory(ctx, req.CategoryID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, category)
+}
+
+// type ListAccountRequest struct {
+// 	pageID   int32 `form:"page_id" binding:"required,min=1"`
+// 	pageSize int32 `form:"page_id" binding:"required,min=5,max=10"`
+// }
+
+// func (server *Server) ListAccount(ctx *gin.Context) {
+// 	var req ListAccountRequest
+// 	if err := ctx.ShouldBindQuery(&req); err != nil {
+// 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+// 		return
+// 	}
+// 	arg := db.ListAccountsParams{
+// 		Limit:  req.pageSize,
+// 		Offset: (req.pageID - 1) * req.pageSize,
+// 	}
+
+// 	accounts, err := server.store.ListAccounts(ctx, arg)
+// 	if err != nil {
+// 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+// 		return
+
+// 	}
+
+// 	ctx.JSON(http.StatusOK, accounts)
+// }

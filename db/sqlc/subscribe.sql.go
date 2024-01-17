@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createSubscribe = `-- name: CreateSubscribe :one
@@ -21,8 +20,8 @@ RETURNING subscribe_id, user_id, course_id
 `
 
 type CreateSubscribeParams struct {
-	UserID   sql.NullInt64 `json:"user_id"`
-	CourseID sql.NullInt64 `json:"course_id"`
+	UserID   int64 `json:"user_id"`
+	CourseID int64 `json:"course_id"`
 }
 
 func (q *Queries) CreateSubscribe(ctx context.Context, arg CreateSubscribeParams) (Subscribe, error) {

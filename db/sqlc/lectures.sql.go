@@ -24,9 +24,9 @@ RETURNING lecture_id, course_module_id, lecture_desc, lecture_number, "video_URL
 `
 
 type CreateLectureParams struct {
-	CourseModuleID sql.NullInt64 `json:"course_module_id"`
+	CourseModuleID int64 `json:"course_module_id"`
 	LectureDesc    string        `json:"lecture_desc"`
-	LectureNumber  sql.NullInt32 `json:"lecture_number"`
+	LectureNumber  int32 `json:"lecture_number"`
 	VideoURL       string        `json:"video_URL"`
 	Status         string        `json:"status"`
 }

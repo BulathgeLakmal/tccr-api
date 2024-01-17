@@ -11,23 +11,30 @@ import (
 
 const createUserDetails = `-- name: CreateUserDetails :one
 INSERT INTO "userDetails"(
+    user_id,
     phone,
     address_line1,
     address_line2
 ) VALUES (
-    $1, $2, $3
+    $1, $2, $3, $4
 )
-RETURNING user_details_id, "user_ID", phone, address_line1, address_line2
+RETURNING user_details_id, user_id, phone, address_line1, address_line2
 `
 
 type CreateUserDetailsParams struct {
-	Phone        int32  `json:"phone"`
-	AddressLine1 string `json:"address_line1"`
-	AddressLine2 string `json:"address_line2"`
+	UserID       int64 `json:"user_id"`
+	Phone        int32         `json:"phone"`
+	AddressLine1 string        `json:"address_line1"`
+	AddressLine2 string        `json:"address_line2"`
 }
 
 func (q *Queries) CreateUserDetails(ctx context.Context, arg CreateUserDetailsParams) (UserDetail, error) {
-	row := q.db.QueryRowContext(ctx, createUserDetails, arg.Phone, arg.AddressLine1, arg.AddressLine2)
+	row := q.db.QueryRowContext(ctx, createUserDetails,
+		arg.UserID,
+		arg.Phone,
+		arg.AddressLine1,
+		arg.AddressLine2,
+	)
 	var i UserDetail
 	err := row.Scan(
 		&i.UserDetailsID,
@@ -50,7 +57,7 @@ func (q *Queries) DeleteUserDetails(ctx context.Context, userDetailsID int64) er
 }
 
 const getUserDetails = `-- name: GetUserDetails :one
-SELECT user_details_id, "user_ID", phone, address_line1, address_line2 FROM "userDetails"
+SELECT user_details_id, user_id, phone, address_line1, address_line2 FROM "userDetails"
 WHERE user_details_id = $1 LIMIT 1
 `
 
@@ -68,7 +75,7 @@ func (q *Queries) GetUserDetails(ctx context.Context, userDetailsID int64) (User
 }
 
 const listUserDetails = `-- name: ListUserDetails :many
-SELECT user_details_id, "user_ID", phone, address_line1, address_line2 FROM "userDetails"
+SELECT user_details_id, user_id, phone, address_line1, address_line2 FROM "userDetails"
 WHERE user_details_id = $1
 ORDER BY user_details_id
 LIMIT $2
@@ -114,7 +121,7 @@ const updateUserDetails = `-- name: UpdateUserDetails :one
 UPDATE "userDetails"
 SET address_line1 = $1
 WHERE user_details_id = $1
-RETURNING user_details_id, "user_ID", phone, address_line1, address_line2
+RETURNING user_details_id, user_id, phone, address_line1, address_line2
 `
 
 func (q *Queries) UpdateUserDetails(ctx context.Context, addressLine1 string) (UserDetail, error) {
