@@ -83,10 +83,6 @@ func (server *Server) subscribedUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, rsp)
 }
 
-func handleError(ctx *gin.Context, code int, err error) {
-	ctx.JSON(code, errorResponse(err))
-}
-
 
 
 

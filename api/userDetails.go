@@ -167,6 +167,10 @@ func (server *Server) createUserDetails(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, rsp)
 }
 
+func handleError(ctx *gin.Context, i int, err error) {
+	panic("unimplemented")
+}
+
 func (server *Server) detailsUser(ctx *gin.Context) {
 	var req detailsRequest
 

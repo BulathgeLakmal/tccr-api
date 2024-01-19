@@ -62,6 +62,7 @@ func NewServer(config util.Config, store *db.Store) (*Server, error) {
 
 	//API calls for assignment
 	router.POST("/assignment", server.createAssignment)
+	router.POST("/assignment/assignmentDetails", server.assignmentUser)
 	// router.GET("/assignment/:assignment_id", server.getUserDetails)
 
 	//API calls for assignment file

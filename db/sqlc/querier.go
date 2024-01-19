@@ -6,7 +6,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 type Querier interface {
@@ -26,13 +25,14 @@ type Querier interface {
 	DeleteLecture(ctx context.Context, lectureID int64) error
 	DeleteUserDetails(ctx context.Context, userDetailsID int64) error
 	DeleteUserRole(ctx context.Context, roleID int64) error
+	GetAssignment(ctx context.Context, userID int64) (Assignment, error)
 	GetCategory(ctx context.Context, categoryID int64) (Category, error)
 	GetCategoryForUpdate(ctx context.Context, categoryID int64) (Category, error)
 	GetCourse(ctx context.Context, courseID int64) (Course, error)
 	GetCourseForUpdate(ctx context.Context, courseID int64) (Course, error)
 	GetCourseModule(ctx context.Context, moduleID int64) (CourseModule, error)
 	GetLecture(ctx context.Context, lectureID int64) (Lecture, error)
-	GetSubscribe(ctx context.Context, userID sql.NullInt64) (Subscribe, error)
+	GetSubscribe(ctx context.Context, userID int64) (Subscribe, error)
 	GetUser(ctx context.Context, email string) (User, error)
 	GetUserDetails(ctx context.Context, userDetailsID int64) (UserDetail, error)
 	GetUserRole(ctx context.Context, roleID int64) (UserRole, error)

@@ -8,3 +8,6 @@ INSERT INTO "assignment"(
 )
 RETURNING *;
 
+-- name: GetAssignment :one
+SELECT * FROM "assignment"
+WHERE user_id = $1 LIMIT 1;

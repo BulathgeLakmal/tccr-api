@@ -37,3 +37,20 @@ func (q *Queries) CreateAssignment(ctx context.Context, arg CreateAssignmentPara
 	)
 	return i, err
 }
+
+const getAssignment = `-- name: GetAssignment :one
+SELECT assignment_id, user_id, course_module_id, lecture_id FROM "assignment"
+WHERE user_id = $1 LIMIT 1
+`
+
+func (q *Queries) GetAssignment(ctx context.Context, userID int64) (Assignment, error) {
+	row := q.db.QueryRowContext(ctx, getAssignment, userID)
+	var i Assignment
+	err := row.Scan(
+		&i.AssignmentID,
+		&i.UserID,
+		&i.CourseModuleID,
+		&i.LectureID,
+	)
+	return i, err
+}
