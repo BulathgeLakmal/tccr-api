@@ -1,23 +1,32 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	db "github.com/it21152832/Learning-Backend/db/sqlc"
+	"github.com/it21152832/Learning-Backend/token"
 	"github.com/it21152832/Learning-Backend/util"
 )
 
 // Server serves HTTP requests for our banking service
 type Server struct {
-	config util.Config
-	store  *db.Store
-	router *gin.Engine
+	config     util.Config
+	store      *db.Store
+	tokenMaker token.Maker
+	router     *gin.Engine
 }
 
 // NewServer creates a new HTTP server and sets up routing.
 func NewServer(config util.Config, store *db.Store) (*Server, error) {
-
+	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
+	if err != nil {
+		return nil, fmt.Errorf("cannot create token maker: %v", err)
+	}
 	server := &Server{
-		store: store,
+		config:     config,
+		store:      store,
+		tokenMaker: tokenMaker,
 	}
 
 	router := gin.Default()
@@ -43,11 +52,12 @@ func NewServer(config util.Config, store *db.Store) (*Server, error) {
 
 	//API calls for user
 	router.POST("/user", server.createUser)
-	router.GET("/user/:user_id", server.getUser)
+	router.POST("/user/login", server.loginUser)
+	// router.GET("/user/:user_id", server.getUser)
 
 	//API calls for user details
-	router.POST("/userDetails", server.createUserDetails)
-	router.GET("/userDetails/:user_details_id", server.getUserDetails)
+	// router.POST("/userDetails", server.createUserDetails)
+	// router.GET("/userDetails/:user_details_id", server.getUserDetails)
 
 	//API calls for assignment
 	router.POST("/assignment", server.createAssignment)

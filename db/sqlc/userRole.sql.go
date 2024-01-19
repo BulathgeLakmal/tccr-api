@@ -33,6 +33,7 @@ func (q *Queries) CreateUserRole(ctx context.Context, arg CreateUserRoleParams) 
 	)
 	return i, err
 }
+
 const deleteUserRole = `-- name: DeleteUserRole :exec
 DELETE FROM "userRole"
 WHERE role_id = $1

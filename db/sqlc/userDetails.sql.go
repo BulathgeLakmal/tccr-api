@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createUserDetails = `-- name: CreateUserDetails :one
@@ -22,7 +23,7 @@ RETURNING user_details_id, user_id, phone, address_line1, address_line2
 `
 
 type CreateUserDetailsParams struct {
-	UserID       int64 `json:"user_id"`
+	UserID       sql.NullInt64 `json:"user_id"`
 	Phone        int32         `json:"phone"`
 	AddressLine1 string        `json:"address_line1"`
 	AddressLine2 string        `json:"address_line2"`
