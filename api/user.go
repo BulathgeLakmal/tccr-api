@@ -364,34 +364,34 @@ import (
 
 type createUserRequest struct {
 	FirstName string `json:"first_name" binding:"required"`
-	LastName string `json:"last_name" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
-	Role string `json:"role" binding:"required"`
-	Username string `json:"username" binding:"required,alphanum"`
-	
+	LastName  string `json:"last_name" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required,min=6"`
+	Role      string `json:"role" binding:"required"`
+	Username  string `json:"username" binding:"required"`
 }
 
 type userResponse struct {
 	FirstName string `json:"first_name"`
-	LastName string `json:"last_name"`
-	Email    string `json:"email"`
-	Role string `json:"role"`
-	Username string `json:"username"`
-	
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Role      string `json:"role"`
+	Username  string `json:"username"`
 }
 
-func newUserResponse(user db.User) userResponse{
+func newUserResponse(user db.User) userResponse {
 	return userResponse{
-		
-		FirstName:          user.FirstName,
-		LastName:          user.LastName,
-		Email:             user.Email,
-		Role: user.Role,
-		Username:         user.Username,
+
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+		Role:      user.Role,
+		Username:  user.Username,
 	}
 }
 
+
+// create user
 func (server *Server) createUser(ctx *gin.Context) {
 	var req createUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -399,18 +399,18 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
-hashedPassword, err := util.HashPassword(req.Password)
+	hashedPassword, err := util.HashPassword(req.Password)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 	arg := db.CreateUserParams{
-		FirstName:          req.FirstName,
-		LastName:          req.LastName,
-		Email:             req.Email,
+		FirstName:      req.FirstName,
+		LastName:       req.LastName,
+		Email:          req.Email,
 		HashedPassword: hashedPassword,
-		Role: req.Role,
-		Username:         req.Username,
+		Role:           req.Role,
+		Username:       req.Username,
 	}
 
 	User, err := server.store.CreateUser(ctx, arg)
@@ -431,16 +431,16 @@ hashedPassword, err := util.HashPassword(req.Password)
 
 
 type loginUserRequest struct {
-	Username string `json:"username" binding:"required,alphanum"`
+	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
 type loginUserResponse struct {
-	AccessToken string       `json:"access_token"`
-	User        userResponse `json:"user"`
+	AccessToken string         `json:"access_token"`
+	User        userResponse   `json:"user"`
 }
 
-
+// login user
 func (server *Server) loginUser(ctx *gin.Context) {
 	var req loginUserRequest
 
@@ -449,7 +449,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	user, err := server.store.GetUser(ctx, req.Username)
+	user, err := server.store.GetUser(ctx, req.Email)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, errorResponse(err))
@@ -465,7 +465,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	accessToken, err := server.tokenMaker.CreateToken(user.Username, server.config.AccessTokenDuration)
+	accessToken, err := server.tokenMaker.CreateToken(user.Email, server.config.AccessTokenDuration)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
@@ -477,10 +477,3 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, rsp)
 }
-
-
-
-
-
-
-

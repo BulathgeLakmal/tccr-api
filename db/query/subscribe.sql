@@ -7,3 +7,6 @@ INSERT INTO "subscribe"(
 )
 RETURNING *;
 
+-- name: GetSubscribe :one
+SELECT * FROM "subscribe"
+WHERE user_id = $1 LIMIT 1;

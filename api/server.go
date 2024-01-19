@@ -56,7 +56,8 @@ func NewServer(config util.Config, store *db.Store) (*Server, error) {
 	// router.GET("/user/:user_id", server.getUser)
 
 	//API calls for user details
-	// router.POST("/userDetails", server.createUserDetails)
+	router.POST("/userDetails", server.createUserDetails)
+	router.POST("/userDetails/details", server.detailsUser)
 	// router.GET("/userDetails/:user_details_id", server.getUserDetails)
 
 	//API calls for assignment
@@ -68,6 +69,8 @@ func NewServer(config util.Config, store *db.Store) (*Server, error) {
 
 	//API calls for subscribe
 	router.POST("/subscribe", server.createSubscribe)
+	router.POST("/subscribe/subscribedUsers", server.subscribedUser)
+
 
 	server.router = router
 	// server.setupRouter()

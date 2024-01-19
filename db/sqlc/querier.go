@@ -6,6 +6,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
@@ -18,7 +19,7 @@ type Querier interface {
 	CreateSubscribe(ctx context.Context, arg CreateSubscribeParams) (Subscribe, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserDetails(ctx context.Context, arg CreateUserDetailsParams) (UserDetail, error)
-	CreateUserRole(ctx context.Context,  arg CreateUserRoleParams) (UserRole, error)
+	CreateUserRole(ctx context.Context, arg CreateUserRoleParams) (UserRole, error)
 	DeleteCategory(ctx context.Context, categoryID int64) error
 	DeleteCourse(ctx context.Context, courseID int64) error
 	DeleteCourseModule(ctx context.Context, moduleID int64) error
@@ -31,6 +32,8 @@ type Querier interface {
 	GetCourseForUpdate(ctx context.Context, courseID int64) (Course, error)
 	GetCourseModule(ctx context.Context, moduleID int64) (CourseModule, error)
 	GetLecture(ctx context.Context, lectureID int64) (Lecture, error)
+	GetSubscribe(ctx context.Context, userID sql.NullInt64) (Subscribe, error)
+	GetUser(ctx context.Context, email string) (User, error)
 	GetUserDetails(ctx context.Context, userDetailsID int64) (UserDetail, error)
 	GetUserRole(ctx context.Context, roleID int64) (UserRole, error)
 	ListCategory(ctx context.Context, arg ListCategoryParams) ([]Category, error)
@@ -47,4 +50,3 @@ type Querier interface {
 	UpdateUserRole(ctx context.Context, role string) (UserRole, error)
 }
 
-var _ Querier = (*Queries)(nil)

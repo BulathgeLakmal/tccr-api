@@ -4,6 +4,7 @@
 
 package db
 
+
 type Assignment struct {
 	AssignmentID   int64         `json:"assignment_id"`
 	UserID         int64 `json:"user_id"`
@@ -13,7 +14,7 @@ type Assignment struct {
 
 type AssignmentFile struct {
 	AssignmentFileID int64         `json:"assignment_file_id"`
-	AssignmentID    int64 `json:"assignment_id"`
+	AssignmentID     int64 `json:"assignment_id"`
 	AssignmentLink   string        `json:"assignment_link"`
 }
 
@@ -60,15 +61,6 @@ type User struct {
 	Role           string `json:"role"`
 	Username       string `json:"username"`
 }
-
-// type User struct {
-// 	Username          string    `json:"username"`
-// 	HashedPassword    string    `json:"hashed_password"`
-// 	FullName          string    `json:"full_name"`
-// 	Email             string    `json:"email"`
-// 	PasswordChangedAt time.Time `json:"password_changed_at"`
-// 	CreatedAt         time.Time `json:"created_at"`
-// }
 
 type UserDetail struct {
 	UserDetailsID int64         `json:"user_details_id"`

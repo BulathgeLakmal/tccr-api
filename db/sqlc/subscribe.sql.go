@@ -30,3 +30,15 @@ func (q *Queries) CreateSubscribe(ctx context.Context, arg CreateSubscribeParams
 	err := row.Scan(&i.SubscribeID, &i.UserID, &i.CourseID)
 	return i, err
 }
+
+const getSubscribe = `-- name: GetSubscribe :one
+SELECT subscribe_id, user_id, course_id FROM "subscribe"
+WHERE user_id = $1 LIMIT 1
+`
+
+func (q *Queries) GetSubscribe(ctx context.Context, userID int64) (Subscribe, error) {
+	row := q.db.QueryRowContext(ctx, getSubscribe, userID)
+	var i Subscribe
+	err := row.Scan(&i.SubscribeID, &i.UserID, &i.CourseID)
+	return i, err
+}

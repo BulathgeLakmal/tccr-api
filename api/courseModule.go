@@ -65,3 +65,27 @@ func (server *Server) getCourseModule(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, courseModule)
 }
+
+// type deleteCourseModuleRequest struct {
+// 	ModuleID int64 `uri:"module_id" binding:"required,min=1"`
+// }
+
+// func (server *Server) deleteCourseModule(ctx *gin.Context) {
+// 	var req CourseModuleRequest
+// 	if err := ctx.ShouldBindUri(&req); err != nil {
+// 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+// 		return
+// 	}
+
+// 	courseModule, err := server.store.GetCourseModule(ctx, req.ModuleID)
+// 	if err != nil {
+// 		if err == sql.ErrNoRows {
+// 			ctx.JSON(http.StatusNotFound, errorResponse(err))
+// 			return
+// 		}
+// 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+// 		return
+// 	}
+
+// 	ctx.JSON(http.StatusOK, courseModule)
+// }
