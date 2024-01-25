@@ -4,7 +4,7 @@ CREATE TABLE "user" (
   "last_name" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
   "hashed_password" varchar NOT NULL,
-  "role" varchar NOT NULL,
+  "role" varchar UNIQUE NOT NULL,
   "username" varchar NOT NULL
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE "subscribe" (
   "course_id" bigint
 );
 
-ALTER TABLE "user" ADD FOREIGN KEY ("role_id") REFERENCES "userRole" ("role_id");
+ALTER TABLE "user" ADD FOREIGN KEY ("role_id") REFERENCES "userRole" ("role");
 
 ALTER TABLE "userDetails" ADD FOREIGN KEY ("user_ID") REFERENCES "user" ("user_id");
 
