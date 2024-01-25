@@ -68,7 +68,7 @@ CREATE TABLE "subscribe" (
   "course_id" bigint
 );
 
-ALTER TABLE "user" ADD FOREIGN KEY ("role_id") REFERENCES "userRole" ("role");
+ALTER TABLE "user" ADD FOREIGN KEY ("role_id") REFERENCES "userRole" ("role_id");
 
 ALTER TABLE "userDetails" ADD FOREIGN KEY ("user_ID") REFERENCES "user" ("user_id");
 
