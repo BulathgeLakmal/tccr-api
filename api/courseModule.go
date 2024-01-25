@@ -10,7 +10,7 @@ import (
 )
 
 type createCourseModuleRequest struct {
-	CourseID   sql.NullInt64 `json:"course_id" binding:"required"`
+	CourseID   int64 `json:"course_id" binding:"required"`
 	ModuleName string        `json:"module_name" binding:"required"`
 }
 

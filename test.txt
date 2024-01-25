@@ -1,0 +1,582 @@
+
+post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find((user) => user.email === email);
+
+  if (!user || user.password !== password) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  res.json({ message: 'Login successful' });
+Sithum Ravishka — 11/10/2023 12:00 PM
+https://router.vuejs.org/guide/advanced/data-fetching
+Vue Router
+The official Router for Vue.js
+https://v2.vuejs.org/v2/cookbook/client-side-storage
+Client-Side Storage — Vue.js
+Vue.js - The Progressive JavaScript Framework
+Image
+Dulanjani — 11/10/2023 12:25 PM
+user  logged in to a dashboard.user want update his profile using user update form. already user data had loaded into the form fields. (email,first name,last name,country,code,mobile).consider this scenario, show me the sample code using vue js
+import {defineStore} from 'pinia'
+import router from '@/router/index'
+import axios from 'axios';
+
+export const authUser = defineStore('authUser', {
+Expand
+message.txt
+3 KB
+Sithum Ravishka — 11/10/2023 12:26 PM
+<template>
+  <div>
+    <h2>Update Profile</h2>
+    <form @submit.prevent="updateProfile">
+      <label>Email:</label>
+      <input v-model="userDetails.email" disabled />
+
+      <label>First Name:</label>
+      <input v-model="userDetails.firstName" />
+
+      <label>Last Name:</label>
+      <input v-model="userDetails.lastName" />
+
+      <label>Country:</label>
+      <input v-model="userDetails.country" />
+
+      <label>Code:</label>
+      <input v-model="userDetails.code" />
+
+      <label>Mobile:</label>
+      <input v-model="userDetails.mobile" />
+
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      userDetails: {
+        email: '',
+        firstName: '',
+        lastName: '',
+        country: '',
+        code: '',
+        mobile: ''
+      }
+    };
+  },
+  methods: {
+    updateProfile() {
+      // Call the Vuex action to update the user profile
+      this.$store.dispatch('authUser/updateUserProfile', this.userDetails);
+    }
+  },
+  created() {
+    // Load user details from the store
+    this.userDetails = { ...this.$store.state.authUser.userDetails };
+  }
+};
+</script>
+
+<style scoped>
+/* Add your styling here if needed */
+</style>
+// ... existing code ...
+
+export const authUser = defineStore('authUser', {
+  // ... existing code ...
+
+  actions: {
+    // ... existing code ...
+
+    async updateUserProfile(userDetails) {
+      // Assuming you have a user ID stored in state
+      const userID = this.userID;
+
+      const res = await axios.put(https://mw.bethel.network/auth/user/${userID}, {
+        // Update only the fields that are changed
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        country: userDetails.country,
+        code: userDetails.code,
+        mobile: userDetails.mobile
+      });
+
+      if (res.error) {
+        console.log(res.error);
+      } else {
+        // Update the user details in the store
+        this.userDetails = res.data;
+        console.log('Profile updated successfully');
+      }
+    }
+  }
+});
+Sithum Ravishka — 01/04/2024 10:33 AM
+go version go1.21.5 linux/amd64
+Dulanjani — 01/04/2024 4:16 PM
+package db
+
+import (
+	"context"
+	"fmt"
+	"testing"
+Expand
+store_test.go
+5 KB
+package db
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+Expand
+store.go
+3 KB
+Sithum Ravishka — 01/04/2024 6:42 PM
+hi
+Dulanjani — 01/04/2024 6:47 PM
+sir ennna qwda
+Sithum Ravishka — 01/04/2024 6:47 PM
+nha nha
+Dulanjani — 01/04/2024 6:47 PM
+accept krnna oneda
+lasari call ekka
+Sithum Ravishka — 01/04/2024 6:47 PM
+dan aulk nha anydesk seen ekata katha kare[j-
+Dulanjani — 01/04/2024 6:47 PM
+hari neh
+Dulanjani — 01/05/2024 11:11 AM
+package api
+
+import (
+	"net/http"
+
+	db "new/learning/user/db/sqlc"
+Expand
+file.go
+3 KB
+package api
+
+import (
+	db "new/learning/user/db/sqlc"
+
+	"github.com/gin-gonic/gin"
+Expand
+server.go
+1 KB
+package api
+
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+Expand
+transfer.go
+2 KB
+package api
+
+import (
+	"database/sql"
+	"net/http"
+
+Expand
+account.go
+3 KB
+Sithum Ravishka — 01/10/2024 9:57 AM
+https://ieeexplore.ieee.org/document/10253518
+Sithum Ravishka — 01/11/2024 4:31 PM
+package api
+
+import (
+    "os"
+    "testing"
+    "time"
+
+    "github.com/bethelplatform/zkstorage/config"
+    db "github.com/bethelplatform/zkstorage/db/sqlc"
+    "github.com/gin-gonic/gin"
+    "github.com/stretchr/testify/require"
+)
+
+func newTestServer(t testing.T, store db.Store)Server {
+    config := config.Config{
+        TokenSymmetricKey:   config.RandomString(32),
+        AccessTokenDuration: time.Minute,
+    }
+
+    server, err := NewServer(config, &store)
+    require.NoError(t, err)
+
+    return server
+}
+
+func TestMain(m *testing.M) {
+    gin.SetMode(gin.TestMode)
+
+    os.Exit(m.Run())
+}
+Dulanjani — 01/11/2024 6:56 PM
+package api
+
+import (
+    db "new/learning/user/db/sqlc"
+    "new/learning/user/util"
+    "os"
+    "testing"
+    "time"
+
+    "github.com/gin-gonic/gin"
+    "github.com/stretchr/testify/require"
+)
+
+func newTestServer(t testing.T, storedb.Store) Server {
+    config := util.Config{
+        TokenSymmetricKey:   util.RandomString(32),
+        AccessTokenDuration: time.Minute,
+    }
+
+    server, err := NewServer(config, store)
+    require.NoError(t, err)
+
+    return server
+}
+
+func TestMain(mtesting.M) {
+    gin.SetMode(gin.TestMode)
+
+    os.Exit(m.Run())
+}
+Dulanjani — 01/11/2024 8:02 PM
+// RandomString generates a random string of length n
+func RandomString(n int) string {
+    var sb strings.Builder
+    k := len(alphabet)
+
+    for i := 0; i < n; i++ {
+        c := alphabet[rand.Intn(k)]
+        sb.WriteByte(c)
+    }
+
+    return sb.String()
+}
+Dulanjani — 01/11/2024 8:11 PM
+package api
+
+import (
+    "errors"
+    "fmt"
+    "net/http"
+    "new/learning/user/token"
+    "strings"
+
+    "github.com/gin-gonic/gin"
+)
+
+const (
+    authorizationHeaderKey = "authorization"
+    authorizationTypeBearer = "bearer"
+    authorizationPayloadKey = "authorization_payload"
+)
+
+func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc{
+    return func(ctx *gin.Context)  {
+
+        authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
+        if len(authorizationHeader)==0{
+            err:=errors.New("authorization header is not provided")
+            ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+            return
+        }
+
+        fields := strings.Fields(authorizationHeader)
+        if len(fields) < 2{
+            err := errors.New("invalid authorization header format")
+            ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+            return
+        }
+
+        authorizationType := strings.ToLower(fields[0])
+        if authorizationType != authorizationTypeBearer{
+            err := fmt.Errorf("unsupported authorizaiton type %s", authorizationType)
+            ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+            return
+        }
+
+        accessToken := fields[1]
+        payload,err := tokenMaker.VerifyToken(accessToken)
+        if err != nil{
+            ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+            return
+        }
+
+        ctx.Set(authorizationPayloadKey, payload)
+        ctx.Next()
+
+    }
+}
+package api
+
+import (
+    "fmt"
+    "net/http"
+    "new/learning/user/token"
+    "testing"
+    "time"
+
+    "net/http/httptest"
+
+    "github.com/gin-gonic/gin"
+    "github.com/stretchr/testify/require"
+)
+
+func addAuthorization(
+    t testing.T,
+    requesthttp.Request,
+    tokenMaker token.Maker,
+    authorizationType string,
+    username string,
+    duration time.Duration,
+) {
+    tokenValue, err := tokenMaker.CreateToken(username, duration)
+    require.NoError(t, err)
+
+    authorizationHeader := fmt.Sprintf("%s %s", authorizationType, tokenValue)
+    request.Header.Set(authorizationHeaderKey, authorizationHeader)
+}
+
+func TestAuthMiddleware(t testing.T) {
+    testCases := []struct {
+        name          string
+        setupAuth     func(ttesting.T, request http.Request, tokenMaker token.Maker)
+        checkResponse func(ttesting.T, recorder httptest.ResponseRecorder)
+    }{
+        {
+            name: "Ok",
+            setupAuth: func(ttesting.T, request http.Request, tokenMaker token.Maker) {
+                addAuthorization(t, request, tokenMaker, authorizationTypeBearer, "user", time.Minute)
+            },
+            checkResponse: func(ttesting.T, recorder *httptest.ResponseRecorder) {
+                require.Equal(t, http.StatusOK, recorder.Code)
+            },
+        },
+package api
+
+import (
+	"fmt"
+	"net/http"
+	"new/learning/user/token"
+Expand
+message.txt
+4 KB
+Dulanjani — 01/11/2024 9:52 PM
+package token
+
+import (
+    "fmt"
+    "time"
+
+    "github.com/o1egl/paseto"
+    "golang.org/x/crypto/chacha20poly1305"
+)
+
+//PasetoMaker is a PASETO token maker
+type PasetoMaker struct{
+    paseto paseto.V2
+    symmetricKey []byte
+
+}
+
+//NewPasetoMaker creates a new PasetoMaker
+func NewPasetoMaker(symmetricKey string) (Maker, error) {
+    if len(symmetricKey) != chacha20poly1305.KeySize {
+        return nil, fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
+    }
+    maker := &PasetoMaker{
+        paseto:       paseto.NewV2(),
+        symmetricKey: []byte(symmetricKey),
+    }
+    return maker, nil
+}
+
+
+//createToken creates a new token for a specific username and duration
+func (makerPasetoMaker) CreateToken(username string, duration time.Duration)(string,error){
+    payload, err := NewPayload(username,duration)
+    if err!= nil{
+        return "", err
+    }
+    return maker.paseto.Encrypt(maker.symmetricKey, payload, nil)
+}
+
+
+//verifyToken check if the the token is valid or not
+func (maker PasetoMaker) VerifyToken(token string) (Payload, error){
+    payload := &Payload{}
+
+    err := maker.paseto.Decrypt(token, maker.symmetricKey, payload, nil)
+    if err != nil{
+        return nil,ErrInvalidToken
+    }
+
+    err = payload.Valid()
+    if err != nil{
+        return nil,err
+    }
+    return payload,nil
+
+}
+https://github.com/it21152832/SimpleBank
+GitHub
+GitHub - it21152832/SimpleBank
+Contribute to it21152832/SimpleBank development by creating an account on GitHub.
+GitHub - it21152832/SimpleBank
+Sithum Ravishka — Yesterday at 10:41 AM
+fcxgamingacademy@gmail.com
+Fcxg$%^123
+Dulanjani — Today at 1:01 PM
+sithum aiya
+server eke code ek dndko
+Sithum Ravishka — Today at 1:03 PM
+package api
+
+import (
+	"fmt"
+	"time"
+
+)
+package api
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/bethelplatform/zkstorage/config"
+	db "github.com/bethelplatform/zkstorage/db/sqlc"
+	"github.com/bethelplatform/zkstorage/token"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+)
+
+// Server serve HTTP requests for our service.
+type Server struct {
+	config     config.Config
+	store      *db.Store
+	tokenMaker token.Maker
+	router     *gin.Engine
+}
+
+// NewServer creates a new HTTP server and setup routing.
+func NewServer(config config.Config, store *db.Store) (*Server, error) {
+	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
+	if err != nil {
+		return nil, fmt.Errorf("cannot create token maker: %w", err)
+	}
+	server := &Server{
+		config:     config,
+		store:      store,
+		tokenMaker: tokenMaker,
+	}
+
+	// gin.SetMode(gin.ReleaseMode)
+	server.setupRouter()
+	return server, nil
+}
+
+func (server *Server) setupRouter() {
+
+	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://*", "https://*", "*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	// authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
+	router.POST("/api/v1/users", server.createUser)
+	router.GET("/api/v1/sign-in", server.GetAuthVerificationRequest)
+	router.GET("/api/v1/status", server.GetRequestStatus)
+	router.POST("/api/v1/callback", server.Callback)
+	router.POST("/api/v1/upload", server.Upload)
+	router.POST("/api/v1/uploads", server.gcupload)
+	router.POST("/api/v1/download", server.Download)
+	// router.GET("/api/v1/download", server.DownloadFile)
+	// router.POST("/api/v1/download", server.DownloadFile)
+
+	//File Auth
+	// router.GET("/api/v1/file", server.GetFileVerificationRequest)
+	router.POST("/api/v1/file", server.GetFileVerificationRequest)
+	router.GET("/api/v1/filestatus", server.GetFileRequestStatus)
+	router.POST("/api/v1/filecallback", server.FileCallback)
+
+	// API call for Owner
+	router.POST("/api/v1/create-owner", server.createOwner)
+	router.GET("/api/v1/get-owner/:id", server.getOwner)
+	router.GET("/api/v1/get-owners", server.listOwner)
+	router.PUT("/api/v1/update-owner", server.updateOwner)
+	router.DELETE("/api/v1/delete-owner/:id", server.deleteOwner)
+
+	// API call for Files
+	router.POST("/api/v1/create-file", server.createFile)
+	router.GET("/api/v1/get-files/:id", server.getFilesOwner)
+	router.GET("/api/v1/get-file/:id", server.getFile)
+	router.GET("/api/v1/get-filename/:id", server.getFileName)
+	// router.PUT("/api/v1/update-file", server.updateFile)
+	router.DELETE("/api/v1/delete-file/:id", server.deleteFile)
+
+	// API call for FileShare
+	router.POST("/api/v1/create-file-share", server.createFileShare)
+	router.GET("/api/v1/get-file-share/:id/:filehash", server.getFileShare)
+
+	// API call for Claim
+	router.POST("/api/v1/create-file-claim", server.createFileClaim)
+	router.GET("/api/v1/get-claim/:id", server.getFileClaim)
+	router.GET("/api/v1/get-filecalim/:id/:filehash", server.getFileClaim)
+
+	// API call for Chunks
+	router.POST("/api/v1/create-chunk", server.createChunk)
+	router.GET("/api/v1/get-chunk/:id", server.getChunk)
+	// // router.GET("/get-owners", server.listOwner)
+	// router.PUT("/update-chunk", server.updateChunk)
+	// router.DELETE("/delete-chunk/:id", server.deleteChunk)
+
+	// API call for Wallet
+	router.POST("/api/v1/create-wallet", server.createWallet)
+	router.POST("/api/v1/wallet/login", server.loginUser)
+
+	// API call for FileHash
+	router.POST("/api/v1/save-filehash", server.saveFileHash)
+	router.GET("/api/v1/get-onchainfile/:id/:filehash", server.getFileProof)
+
+	// router.POST("/save-chunk", server.saveChunkOnchain)
+
+	//Claims-api
+	router.GET("/api/v1/requestIdentity", server.RequestIdentity)
+	router.GET("/api/v1/getIdentities", server.GetIdentities)
+	router.POST("/api/v1/createClaim", server.CreateClaim)
+	router.GET("/api/v1/getClaim", server.GetClaim)
+	router.GET("/api/v1/getQr", server.GetQRforClaim)
+	router.POST("/api/v1/getQr", server.GetQRforClaim)
+	router.POST("/api/v1/createFileClaim", server.Upload)
+	router.POST("/api/v1/fileQr", server.GetFileClaimQr)
+
+	server.router = router
+}
+
+// Start runs the HTTP server on a specific address.
+func (server *Server) Start(address string) error {
+	return server.router.Run(address)
+}
+
+func errorResponse(err error) gin.H {
+	return gin.H{
+		"error": err.Error(),
+	}
+}

@@ -17,7 +17,6 @@ INSERT INTO "userRole" (
 )
 RETURNING role_id, role
 `
-
 type CreateUserRoleParams struct {
 	Role string        `json:"role"`
 }

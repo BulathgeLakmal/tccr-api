@@ -69,3 +69,18 @@ func (server *Server) getCourse(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, course)
 }
 
+
+type getAllCourseRequest struct {
+	
+}
+
+func (server *Server) getAllCourse(ctx *gin.Context) {
+
+	courses, err := server.store.GetAllCourse(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, courses)
+}

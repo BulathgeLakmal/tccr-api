@@ -48,6 +48,38 @@ func (q *Queries) DeleteCourse(ctx context.Context, courseID int64) error {
 	return err
 }
 
+const getAllCourse = `-- name: GetAllCourse :many
+SELECT course_id, course_name, course_desc, category FROM course
+`
+
+func (q *Queries) GetAllCourse(ctx context.Context) ([]Course, error) {
+	rows, err := q.db.QueryContext(ctx, getAllCourse)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Course{}
+	for rows.Next() {
+		var i Course
+		if err := rows.Scan(
+			&i.CourseID,
+			&i.CourseName,
+			&i.CourseDesc,
+			&i.Category,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getCourse = `-- name: GetCourse :one
 SELECT course_id, course_name, course_desc, category FROM course
 WHERE course_id = $1 LIMIT 1

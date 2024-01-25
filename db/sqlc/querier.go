@@ -18,13 +18,14 @@ type Querier interface {
 	CreateSubscribe(ctx context.Context, arg CreateSubscribeParams) (Subscribe, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserDetails(ctx context.Context, arg CreateUserDetailsParams) (UserDetail, error)
-	CreateUserRole(ctx context.Context, arg CreateUserRoleParams) (UserRole, error)
+	CreateUserRole(ctx context.Context, arg CreateUserRoleParams ) (UserRole, error)
 	DeleteCategory(ctx context.Context, categoryID int64) error
 	DeleteCourse(ctx context.Context, courseID int64) error
 	DeleteCourseModule(ctx context.Context, moduleID int64) error
 	DeleteLecture(ctx context.Context, lectureID int64) error
 	DeleteUserDetails(ctx context.Context, userDetailsID int64) error
 	DeleteUserRole(ctx context.Context, roleID int64) error
+	GetAllCourse(ctx context.Context) ([]Course, error)
 	GetAssignment(ctx context.Context, userID int64) (Assignment, error)
 	GetCategory(ctx context.Context, categoryID int64) (Category, error)
 	GetCategoryForUpdate(ctx context.Context, categoryID int64) (Category, error)

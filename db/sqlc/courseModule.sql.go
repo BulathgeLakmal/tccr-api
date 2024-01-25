@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createCourseModule = `-- name: CreateCourseModule :one
@@ -21,7 +20,7 @@ RETURNING module_id, course_id, module_name
 `
 
 type CreateCourseModuleParams struct {
-	CourseID   sql.NullInt64 `json:"course_id"`
+	CourseID   int64 `json:"course_id"`
 	ModuleName string        `json:"module_name"`
 }
 

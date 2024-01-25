@@ -351,8 +351,6 @@
 //		ctx.JSON(http.StatusOK, rsp)
 //	}
 
-
-
 package api
 
 import (
@@ -393,7 +391,6 @@ func newUserResponse(user db.User) userResponse {
 	}
 }
 
-
 // create user
 func (server *Server) createUser(ctx *gin.Context) {
 	var req createUserRequest
@@ -432,18 +429,18 @@ func (server *Server) createUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, rsp)
 }
 
-
 type loginUserRequest struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
 type loginUserResponse struct {
-	AccessToken string         `json:"access_token"`
-	User        userResponse   `json:"user"`
+	AccessToken string       `json:"access_token"`
+	User        userResponse `json:"user"`
+	Role        string       `json:"role"`
 }
 
-// login user
+
 func (server *Server) loginUser(ctx *gin.Context) {
 	var req loginUserRequest
 
@@ -477,6 +474,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	rsp := loginUserResponse{
 		AccessToken: accessToken,
 		User:        newUserResponse(user),
+		Role:        user.Role,
 	}
 	ctx.JSON(http.StatusOK, rsp)
 }
