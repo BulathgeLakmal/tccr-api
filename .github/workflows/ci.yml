@@ -18,7 +18,7 @@ jobs:
         image: postgres:12
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: secretpassword
+          POSTGRES_PASSWORD: secret
           POSTGRES_USER: root
           POSTGRES_DB: course
           # The hostname used to communicate with the PostgreSQL service container
