@@ -4,7 +4,7 @@ CREATE TABLE "user" (
   "last_name" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
   "hashed_password" varchar NOT NULL,
-  "role" varchar UNIQUE NOT NULL,
+  "role" varchar NOT NULL,
   "username" varchar NOT NULL
 );
 
