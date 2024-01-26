@@ -41,6 +41,33 @@ func (q *Queries) DeleteCourseModule(ctx context.Context, moduleID int64) error 
 	return err
 }
 
+const getAllCourseModule = `-- name: GetAllCourseModule :many
+SELECT module_id, course_id, module_name FROM "courseModule"
+`
+
+func (q *Queries) GetAllCourseModule(ctx context.Context) ([]CourseModule, error) {
+	rows, err := q.db.QueryContext(ctx, getAllCourseModule)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CourseModule{}
+	for rows.Next() {
+		var i CourseModule
+		if err := rows.Scan(&i.ModuleID, &i.CourseID, &i.ModuleName); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getCourseModule = `-- name: GetCourseModule :one
 SELECT module_id, course_id, module_name FROM "courseModule"
 WHERE module_id = $1 LIMIT 1

@@ -66,6 +66,21 @@ func (server *Server) getCourseModule(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, courseModule)
 }
 
+type getAllCourseModuleRequest struct {
+	
+}
+
+func (server *Server) GetAllCourseModule (ctx *gin.Context) {
+
+	courseModule, err := server.store.GetAllCourseModule (ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, courseModule)
+}
+
 // type deleteCourseModuleRequest struct {
 // 	ModuleID int64 `uri:"module_id" binding:"required,min=1"`
 // }

@@ -156,6 +156,7 @@ func NewServer(config util.Config, store *db.Store) (*Server, error) {
 	// API calls for course module
 	router.POST("/courseModule", server.createCourseModule)
 	router.GET("/courseModule/:module_id", server.getCourseModule)
+	router.GET("/courseModule", server.GetAllCourseModule)
 
 	// API calls for lectures
 	router.POST("/lectures", server.createLecture)

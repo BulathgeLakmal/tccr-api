@@ -8,14 +8,12 @@ INSERT INTO course (
 )
 RETURNING *;
 
-
 -- name: GetCourse :one
 SELECT * FROM course
 WHERE course_id = $1 LIMIT 1;
 
 -- name: GetAllCourse :many
-SELECT * FROM course
-
+SELECT * FROM course;
 
 -- name: GetCourseForUpdate :one
 SELECT * FROM course

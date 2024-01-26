@@ -4,7 +4,6 @@
 
 package db
 
-
 type Assignment struct {
 	AssignmentID   int64         `json:"assignment_id"`
 	UserID         int64 `json:"user_id"`

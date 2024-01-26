@@ -12,6 +12,7 @@ RETURNING *;
 SELECT * FROM "courseModule"
 WHERE module_id = $1 LIMIT 1;
 
+
 -- name: ListModules :many
 SELECT * FROM "courseModule"
 WHERE module_id = $1
@@ -28,3 +29,6 @@ UPDATE "courseModule"
 SET module_name = $1
 WHERE module_id = $1
 RETURNING *;
+
+-- name: GetAllCourseModule :many
+SELECT * FROM "courseModule";
